@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Déjà — la bourse du raisonnement",
+  "version": "0.1.0",
+  "description": "Ton navigateur pense une fois, et revend ce qu'il a pensé. Achète le raisonnement des autres pour quelques centimes au lieu de le refaire.",
+  "permissions": ["storage", "activeTab", "scripting", "sidePanel"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "dist/background.js" },
+  "action": { "default_title": "Ouvrir Déjà" },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "icons": { "128": "icon128.png" }
+}
