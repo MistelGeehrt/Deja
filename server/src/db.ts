@@ -1,4 +1,4 @@
-import Database from "better-sqlite3";
+import { DatabaseSync } from "node:sqlite";
 
 export type Reasoning = {
   id: number;
@@ -13,8 +13,8 @@ export type Reasoning = {
 };
 
 export function openDb(path: string) {
-  const db = new Database(path);
-  db.pragma("journal_mode = WAL");
+  const db = new DatabaseSync(path);
+  if (path !== ":memory:") db.exec("PRAGMA journal_mode = WAL");
   db.exec(`
     CREATE TABLE IF NOT EXISTS reasonings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,10 +47,10 @@ export function openDb(path: string) {
   `);
 
   const stmts = {
-    findByFp: db.prepare<[string], Reasoning>("SELECT * FROM reasonings WHERE fingerprint = ?"),
+    findByFp: db.prepare("SELECT * FROM reasonings WHERE fingerprint = ?"),
     insert: db.prepare(
       `INSERT INTO reasonings (fingerprint, task, context_url, result, seller_wallet, price_micro_usdc)
-       VALUES (@fingerprint, @task, @context_url, @result, @seller_wallet, @price_micro_usdc)`
+       VALUES (?, ?, ?, ?, ?, ?)`
     ),
     bumpReuse: db.prepare("UPDATE reasonings SET reuse_count = reuse_count + 1 WHERE fingerprint = ?"),
     event: db.prepare("INSERT INTO events (fingerprint, kind, wallet) VALUES (?, ?, ?)"),
@@ -58,11 +58,9 @@ export function openDb(path: string) {
       `INSERT INTO purchases (tx_signature, fingerprint, buyer_wallet, seller_wallet, amount_micro_usdc, fee_micro_usdc)
        VALUES (?, ?, ?, ?, ?, ?)`
     ),
-    hasPurchase: db.prepare<[string], { n: number }>("SELECT count(*) AS n FROM purchases WHERE tx_signature = ?"),
-    buyerOwns: db.prepare<[string, string], { n: number }>(
-      "SELECT count(*) AS n FROM purchases WHERE fingerprint = ? AND buyer_wallet = ?"
-    ),
-    stats: db.prepare<[], Record<string, number>>(`
+    hasPurchase: db.prepare("SELECT count(*) AS n FROM purchases WHERE tx_signature = ?"),
+    buyerOwns: db.prepare("SELECT count(*) AS n FROM purchases WHERE fingerprint = ? AND buyer_wallet = ?"),
+    stats: db.prepare(`
       SELECT
         (SELECT count(*) FROM reasonings) AS reasonings,
         (SELECT count(*) FROM events WHERE kind='miss') AS misses,
@@ -71,19 +69,21 @@ export function openDb(path: string) {
         (SELECT coalesce(sum(amount_micro_usdc),0) FROM purchases) AS volume_micro_usdc,
         (SELECT coalesce(sum(fee_micro_usdc),0) FROM purchases) AS fees_micro_usdc
     `),
-    topSellers: db.prepare<[], { seller_wallet: string; earned: number; sales: number }[]>(`
+    topSellers: db.prepare(`
       SELECT seller_wallet, sum(amount_micro_usdc - fee_micro_usdc) AS earned, count(*) AS sales
       FROM purchases GROUP BY seller_wallet ORDER BY earned DESC LIMIT 10
     `),
   };
 
+  const num = (v: unknown) => Number(v ?? 0);
+
   return {
     raw: db,
-    find(fp: string) {
-      return stmts.findByFp.get(fp) ?? null;
+    find(fp: string): Reasoning | null {
+      return (stmts.findByFp.get(fp) as Reasoning | undefined) ?? null;
     },
     insert(r: Omit<Reasoning, "id" | "reuse_count" | "created_at">) {
-      stmts.insert.run(r);
+      stmts.insert.run(r.fingerprint, r.task, r.context_url, r.result, r.seller_wallet, r.price_micro_usdc);
     },
     logEvent(fp: string, kind: "miss" | "hit" | "sale", wallet = "") {
       stmts.event.run(fp, kind, wallet);
@@ -94,19 +94,24 @@ export function openDb(path: string) {
       stmts.event.run(fp, "sale", buyer);
     },
     purchaseExists(sig: string) {
-      return (stmts.hasPurchase.get(sig)?.n ?? 0) > 0;
+      return num((stmts.hasPurchase.get(sig) as { n: unknown }).n) > 0;
     },
     buyerOwns(fp: string, buyer: string) {
-      return (stmts.buyerOwns.get(fp, buyer)?.n ?? 0) > 0;
+      return num((stmts.buyerOwns.get(fp, buyer) as { n: unknown }).n) > 0;
     },
     stats() {
-      const s = stmts.stats.get()!;
+      const raw = stmts.stats.get() as Record<string, unknown>;
+      const s = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, num(v)]));
       const lookups = s.hits + s.misses;
       return {
         ...s,
         lookups,
         duplicate_rate: lookups ? s.hits / lookups : 0,
-        top_sellers: stmts.topSellers.all(),
+        top_sellers: (stmts.topSellers.all() as { seller_wallet: string; earned: unknown; sales: unknown }[]).map((t) => ({
+          seller_wallet: t.seller_wallet,
+          earned: num(t.earned),
+          sales: num(t.sales),
+        })),
       };
     },
   };
