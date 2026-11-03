@@ -12,13 +12,15 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [x] Extension : panneau latéral, wallet local, lecture de page, paiement USDC + memo
 - [x] Test de bout en bout en Chromium sans chaîne (mode `DEJA_SKIP_CHAIN_VERIFY=1`)
 - [x] Dépôt GitHub `MistelGeehrt/Deja` (toi) et code poussé
-- [ ] (toi) Installer Node.js 22 et lancer le serveur en local — voir README
-- [ ] (toi) Coller la clé API dans `server/.env`
-- [ ] (toi) Charger l'extension dans Chrome (chrome://extensions → mode développeur → « Charger l'extension non empaquetée » → dossier `extension`)
-- [ ] (toi) Première demande sur une vraie page, avec une vraie réponse d'IA
-- [ ] (toi) Alimenter le wallet de l'extension : SOL de test sur faucet.solana.com, USDC de test sur faucet.circle.com (réseau Solana devnet)
-- [ ] (toi) Créer un second wallet (second profil Chrome) et acheter un raisonnement du premier : premier paiement réel sur devnet, vérifié par le serveur
-- [ ] Corriger ce que ce premier vrai test révélera
+- [x] (toi) Installer Node.js 22 et lancer le serveur en local — voir README
+- [x] (toi) Coller la clé API dans `server/.env`
+- [x] (toi) Charger l'extension dans Chrome (chrome://extensions → mode développeur → « Charger l'extension non empaquetée » → dossier `extension`)
+- [x] (toi) Première demande sur une vraie page, avec une vraie réponse d'IA
+- [x] (toi) Alimenter le wallet de l'extension : SOL de test sur faucet.solana.com, USDC de test sur faucet.circle.com (réseau Solana devnet)
+- [x] (toi) Créer un second wallet (second profil Chrome) et acheter un raisonnement du premier : premier paiement réel sur devnet, vérifié par le serveur
+- [x] Premier achat réel vérifié sur devnet le 4 novembre 2026 (acheteur −0,10 ; vendeur/plateforme +0,10)
+- [ ] Afficher la mise en forme des réponses (gras, titres) au lieu des `**` bruts
+- [ ] Corriger ce que les prochains tests révéleront
 
 ## Étape 2 — Mesurer le taux de doublon (le vrai test du projet)
 - [ ] Page de statistiques lisible (taux de doublon, ventes, meilleurs vendeurs)
