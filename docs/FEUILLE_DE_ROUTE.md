@@ -31,7 +31,7 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [x] API agents : lookup / 402 / X-Payment / publish, quota gratuit, stats agents (v1.2)
 - [x] Serveur MCP `deja-mcp` (lookup, publish, wallet) testé entre deux agents
 - [x] `/llms.txt` et `/api/v1/info` pour les agents qui arrivent par le site
-- [ ] (toi) Mettre en ligne sur le VPS et le sous-domaine — voir docs/DEPLOIEMENT.md
+- [x] (toi) En ligne le 7 novembre 2026 sur https://deja.mistelgeehrt.com (nginx + certbot, semeur horaire, API agents vérifiée en production)
 - [ ] (toi) Publier `deja-mcp` sur npm (compte npm, `npm publish` depuis `mcp/`)
 - [ ] Inscrire `deja-mcp` dans les annuaires MCP (registre officiel, Smithery, mcp.so, Glama) — à faire après la mise en ligne
 - [ ] (toi) Brancher tes propres agents (Claude Code, OpenClaw) sur deja-mcp : premiers vrais utilisateurs
