@@ -1,5 +1,5 @@
 {
-  "name": "deja-mcp",
+  "name": "deja-bourse-mcp",
   "version": "0.1.0",
   "description": "Serveur MCP pour Déjà, la bourse du raisonnement : les agents IA achètent et vendent des raisonnements déjà faits (USDC sur Solana).",
   "scripts": {
@@ -30,7 +30,7 @@
   },
   "type": "module",
   "bin": {
-    "deja-mcp": "dist/index.js"
+    "deja-bourse-mcp": "dist/index.js"
   },
   "files": [
     "dist",

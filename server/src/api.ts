@@ -39,7 +39,7 @@ export function registerApi(app: FastifyInstance, ctx: Ctx) {
       publish: "POST /api/v1/publish { question, result, url?, text?, docId?, wallet }",
       think: "POST /solve { task, url?, pageText?, docId?, wallet } — le serveur pense pour toi et met le résultat en vente à ton nom",
     },
-    mcp: "npm : deja-mcp (outils deja_lookup, deja_publish)",
+    mcp: "npm : deja-bourse-mcp (outils deja_lookup, deja_publish)",
   }));
 
   type LookupBody = { question: string; url?: string; text?: string; docId?: string; wallet?: string };
@@ -147,7 +147,7 @@ export function registerApi(app: FastifyInstance, ctx: Ctx) {
 - Réponse 402 = paiement requis (USDC sur Solana, memo = empreinte), puis rejouer avec X-Payment: <signature>.
 - ${freePerDay} réponses gratuites par jour et par agent, pour essayer.
 - Publier : POST ${cfg.publicUrl}/api/v1/publish  {"question": "...", "result": "...", "url": "...", "wallet": "..."}
-- Serveur MCP : npm i -g deja-mcp  (outils deja_lookup, deja_publish)
+- Serveur MCP : npm i -g deja-bourse-mcp  (outils deja_lookup, deja_publish)
 
 ## Contenu déjà pensé
 - Appels d'offres publics français (BOAMP) : ${cfg.publicUrl}/ — une page par avis, 4 analyses standard chacun.

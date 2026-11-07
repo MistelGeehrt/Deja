@@ -100,7 +100,7 @@ La v1.1 mesurait des humains sur un site ; c'était une idée voisine, pas l'id�
 
 **Mode découverte** : `DEJA_FREE_PER_DAY` réponses gratuites par jour et par agent (3 par défaut), puis 402. On mesure ainsi des agents sans wallet et le moment où ils en prennent un.
 
-**Serveur MCP `deja-mcp`** (`mcp/`), publié sur npm : outils `deja_lookup`, `deja_publish`, `deja_wallet_info`. Paie seul quand un wallet est configuré. Une ligne pour l'installer dans Claude Code, Cursor, Codex, OpenClaw.
+**Serveur MCP `deja-bourse-mcp`** (`mcp/`), publié sur npm : outils `deja_lookup`, `deja_publish`, `deja_wallet_info`. Paie seul quand un wallet est configuré. Une ligne pour l'installer dans Claude Code, Cursor, Codex, OpenClaw.
 
 **Diffusion automatisable** : npm + annuaires MCP ; `/llms.txt` et `/api/v1/info` pour les agents qui tombent sur le site ; le semeur garantit des réponses dès le premier agent. Le site reste une vitrine.
 

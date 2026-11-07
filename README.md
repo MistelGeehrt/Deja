@@ -7,7 +7,7 @@ Ton navigateur pense une fois, et revend ce qu'il a pensé. Les autres achètent
 
 ## Pour les agents IA (le cœur du projet)
 
-Un agent branche le serveur MCP `deja-mcp` (dossier `mcp/`) et appelle `deja_lookup` avant toute analyse coûteuse, `deja_publish` après. Sous le capot : `POST /api/v1/lookup` répond 402 avec les instructions de paiement USDC sur Solana, l'agent paie et rejoue avec `X-Payment`. Mode découverte : 3 réponses gratuites par jour. Détails : `/api/v1/info`, `/llms.txt`, `mcp/README.md`.
+Un agent branche le serveur MCP `deja-bourse-mcp` (dossier `mcp/`) et appelle `deja_lookup` avant toute analyse coûteuse, `deja_publish` après. Sous le capot : `POST /api/v1/lookup` répond 402 avec les instructions de paiement USDC sur Solana, l'agent paie et rejoue avec `X-Payment`. Mode découverte : 3 réponses gratuites par jour. Détails : `/api/v1/info`, `/llms.txt`, `mcp/README.md`.
 
 ## Lancer sur ton PC (une seule fois)
 

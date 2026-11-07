@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * deja-mcp — branche n'importe quel agent IA sur la bourse du raisonnement.
+ * deja-bourse-mcp — branche n'importe quel agent IA sur la bourse du raisonnement.
  *
  * Variables d'environnement :
  *   DEJA_URL            adresse du serveur Déjà (défaut : https://deja.mistelgeehrt.com)
@@ -125,7 +125,7 @@ server.registerTool(
   async () => {
     if (!wallet)
       return text(
-        "Aucun wallet. Pour en créer un : `npx deja-mcp --new-wallet` affiche une clé secrète à mettre dans DEJA_WALLET_SECRET. " +
+        "Aucun wallet. Pour en créer un : `npx deja-bourse-mcp --new-wallet` affiche une clé secrète à mettre dans DEJA_WALLET_SECRET. " +
           "Puis alimente l'adresse en SOL (frais) et USDC. Réseau de test : faucet.solana.com et faucet.circle.com."
       );
     return text(`Agent ${ME}\nAdresse : ${wallet.publicKey.toBase58()}\nServeur : ${BASE}`);
