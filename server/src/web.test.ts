@@ -56,7 +56,7 @@ describe("semeur", () => {
     globalThis.fetch = (async () => new Response(JSON.stringify({ results: [record] }), { status: 200 })) as typeof fetch;
     try {
       const r = await seedOnce(db, agent, cfg, { log: () => {} });
-      expect(r).toEqual({ fetched: 1, added: 1, made: STANDARD_QUESTIONS.length });
+      expect(r).toEqual({ fetched: 2, added: 1, made: STANDARD_QUESTIONS.length }); // 2 jours interrogés (aujourd'hui + hier), même faux avis
       const again = await seedOnce(db, agent, cfg, { log: () => {} });
       expect(again.made).toBe(0); // déjà fait : rien de recalculé
     } finally {
