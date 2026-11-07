@@ -1,0 +1,15 @@
+[Unit]
+Description=Déjà — semeur BOAMP (toutes les heures)
+After=network.target deja.service
+
+[Service]
+Type=simple
+User=deja
+WorkingDirectory=/opt/deja/server
+EnvironmentFile=/opt/deja/server/.env
+ExecStart=/usr/bin/node --no-warnings /opt/deja/server/node_modules/.bin/tsx src/seeder.ts --loop --every 60
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

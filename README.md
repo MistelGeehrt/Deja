@@ -54,6 +54,14 @@ cd server && npm test        # 13 tests du serveur
 node e2e.mjs                 # depuis la racine : charge l'extension dans Chromium et pose une question (serveur lancé en mode sans chaîne)
 ```
 
+## Le site public et le semeur (stratégie de test)
+
+- `npm run seed` : récupère les avis BOAMP du jour et produit leurs 4 analyses (coûte des tokens).
+- `npm run seed -- --day 2026-11-06 --max 10` : un jour précis, 10 avis maximum.
+- `npm run seed:loop` : toutes les heures.
+- Le site est servi par le même serveur : http://localhost:8787/ ; tableau de bord : /tableau?cle=… (voir `DEJA_DASHBOARD_KEY`).
+- Mise en ligne sur un VPS : [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md).
+
 ## Les chiffres
 
 `http://localhost:8787/stats` donne le taux de doublon, les ventes et les meilleurs vendeurs. C'est ce chiffre qui décide de la suite du projet.

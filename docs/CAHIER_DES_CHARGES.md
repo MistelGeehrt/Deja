@@ -1,6 +1,6 @@
 # Déjà — cahier des charges
 
-*La bourse du raisonnement. Version du 3 novembre 2026.*
+*La bourse du raisonnement. Version 1.1 du 7 novembre 2026.*
 
 ## 1. L'idée en une phrase
 
@@ -68,3 +68,22 @@ Tant que ce chiffre n'est pas mesuré sur de vraies demandes, toute projection d
 - **Œuf et poule** : sans vendeurs, pas d'acheteurs. Le premier gros fournisseur de raisonnements sera MistelGeehrt lui-même.
 - **Vie privée** : un raisonnement sur une page privée (intranet, compte client) ne doit pas être mis en vente. Règle v1 : l'extension ne lit que les pages `http(s)`. Règle v2 : liste de domaines exclus + opt-out par demande.
 - **Contenu de la page comme empreinte** : deux visiteurs d'une page dynamique (pub, date du jour) n'auront pas la même empreinte. À mesurer ; sinon empreinte sur le contenu principal seulement.
+
+## 9. Version 1.1 — la stratégie de test (7 novembre 2026)
+
+On ne peut pas automatiser la demande : des robots qui posent les mêmes questions mesureraient ce qu'on a programmé. On automatise donc tout le reste.
+
+**Terrain choisi : les marchés publics français (BOAMP).** Avis publiés en open data (API officielle DILA, licence ouverte), des centaines par jour, lus par des entreprises qui se posent toutes les mêmes questions.
+
+**Le semeur** (`server/src/seeder.ts`) tourne toutes les heures : nouveaux avis → 4 analyses standard chacun, mises en vente au nom du wallet de la plateforme. Coût estimé : ~1 € par jour de tokens pour 500 avis.
+
+**Le site public** (`server/src/web.ts`) : une page par avis, indexable par Google, avec les 4 analyses derrière une « porte » et un champ de question libre. Première question d'un visiteur : réponse offerte et mise en vente à son nom. Question déjà posée : devis. C'est Google qui amène les testeurs, pas le bouche-à-oreille.
+
+**La porte factice** : le bouton « Débloquer pour 0,10 € » enregistre l'intention de payer puis offre la réponse (bêta annoncée). On mesure l'envie de payer sans imposer un wallet à des inconnus. L'extension et Solana restent le produit final, pas l'instrument de mesure.
+
+**Les quasi-doublons** : chaque question est comparée par le sens (embeddings) à celles déjà résolues sur le même avis ; une correspondance au-dessus du seuil compte comme « quasi-doublon » et renvoie le raisonnement existant. C'est le chiffre que la v1 ratait.
+
+**Grille de décision après 6 semaines** (tableau de bord `/tableau`) :
+- moins de 200 questions posées par des inconnus → terrain ou acquisition inadaptés, on change une fois ;
+- plus de 200 questions et moins de 5 % de clics « payer » sur les devis → personne ne veut payer, on arrête ;
+- plus de 15 % de clics → brancher le vrai paiement, étape 3.

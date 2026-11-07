@@ -1,0 +1,5 @@
+# Remplace deja.mistelgeehrt.com par ton sous-domaine. Caddy obtient le certificat HTTPS tout seul.
+deja.mistelgeehrt.com {
+	reverse_proxy 127.0.0.1:8787
+	encode gzip
+}

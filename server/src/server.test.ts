@@ -13,6 +13,9 @@ const cfg: Config = {
   usdcMint: "USDC",
   rpcUrl: "",
   cluster: "test",
+  publicUrl: "http://test",
+  seedMaxPerRun: 5,
+  dashboardKey: "",
   skipChainVerify: true,
 };
 

@@ -1,4 +1,5 @@
 import { Connection, PublicKey, type Keypair } from "@solana/web3.js";
+import { marked } from "marked";
 import { loadOrCreateWallet, balances, payQuote, type Quote } from "./wallet";
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -67,7 +68,8 @@ async function readActiveTab(): Promise<{ url: string; text: string }> {
 function showResult(text: string, badge: string, cls: string) {
   $("quote").hidden = true;
   $("resultCard").hidden = false;
-  $("result").textContent = text;
+  const safe = text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
+  $("result").innerHTML = marked.parse(safe, { async: false }) as string;
   const b = $("resultBadge");
   b.textContent = badge;
   b.className = "badge " + cls;

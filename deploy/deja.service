@@ -1,0 +1,15 @@
+[Unit]
+Description=Déjà — serveur de la bourse du raisonnement
+After=network.target
+
+[Service]
+Type=simple
+User=deja
+WorkingDirectory=/opt/deja/server
+EnvironmentFile=/opt/deja/server/.env
+ExecStart=/usr/bin/node --no-warnings /opt/deja/server/node_modules/.bin/tsx src/server.ts
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

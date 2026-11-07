@@ -22,11 +22,16 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [ ] Afficher la mise en forme des réponses (gras, titres) au lieu des `**` bruts
 - [ ] Corriger ce que les prochains tests révéleront
 
-## Étape 2 — Mesurer le taux de doublon (le vrai test du projet)
-- [ ] Page de statistiques lisible (taux de doublon, ventes, meilleurs vendeurs)
-- [ ] Journal anonymisé des demandes pour étudier les quasi-doublons (même tâche, formulation différente)
-- [ ] (toi) Utiliser Déjà tous les jours pendant 2 à 4 semaines, et faire utiliser à 3-5 personnes
-- [ ] Décision : taux de doublon < 5 % → changer d'angle ; > 20 % → étape 3
+## Étape 2 — Mesurer, automatiquement (stratégie v1.1)
+- [x] Semeur BOAMP : nouveaux avis → 4 analyses standard, en vente au nom de la plateforme
+- [x] Site public : une page par avis, question libre, porte « Débloquer 0,10 € » qui mesure l'intention de payer
+- [x] Quasi-doublons comptés par le sens (embeddings) ; mise en forme des réponses (gras, listes)
+- [x] Tableau de bord `/tableau` avec la grille de décision intégrée ; sitemap et robots pour Google
+- [x] Kit de déploiement VPS (install.sh, services, Caddy HTTPS)
+- [ ] (toi) Mettre en ligne sur le VPS et le sous-domaine — voir docs/DEPLOIEMENT.md
+- [ ] (toi) Déclarer le site dans Google Search Console (sitemap) pour accélérer l'indexation
+- [ ] (toi) Regarder le tableau de bord une fois par semaine, 6 semaines, sans rien changer
+- [ ] Décision selon la grille : < 200 questions → changer de terrain une fois ; < 5 % de clics payer → arrêter ; > 15 % → étape 3
 
 ## Étape 3 — Ouvrir à d'autres
 - [ ] (toi) Héberger le serveur sur le VPS (HTTPS, nom de domaine)

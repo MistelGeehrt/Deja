@@ -43,3 +43,8 @@ export function contextHash(url: string, pageText: string): string {
 export function fingerprint(task: string, url: string, pageText: string): string {
   return sha256(normalizeTask(task) + "|" + contextHash(url, pageText));
 }
+
+/** Empreinte d'une demande sur un document connu du serveur (avis BOAMP, etc.). */
+export function fingerprintDoc(task: string, docId: string): string {
+  return sha256(normalizeTask(task) + "|doc:" + docId);
+}
