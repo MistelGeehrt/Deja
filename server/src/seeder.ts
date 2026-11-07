@@ -54,12 +54,16 @@ export async function seedDocument(db: Db, agent: Agent, cfg: Config, doc: Docum
 export async function seedOnce(db: Db, agent: Agent, cfg: Config, opts: { day?: string; max?: number; log?: typeof console.log; embed?: Embedder } = {}) {
   const log = opts.log ?? console.log;
   const max = opts.max ?? cfg.seedMaxPerRun;
-  log(`[semeur] récupération BOAMP (${opts.day ?? "aujourd'hui"})…`);
+  // Sans jour précis : aujourd'hui ET hier, car le BOAMP publie en journée et un passage matinal verrait 0 avis.
+  const days = opts.day ? [opts.day] : [0, 1].map((d) => new Date(Date.now() - d * 86_400_000).toISOString().slice(0, 10));
+  log(`[semeur] récupération BOAMP (${days.join(", ")})…`);
   let fetched: NewDocument[] = [];
-  try {
-    fetched = await fetchBoampDay({ day: opts.day, limit: max });
-  } catch (e) {
-    log(`[semeur] BOAMP injoignable : ${(e as Error).message}`);
+  for (const day of days) {
+    try {
+      fetched.push(...(await fetchBoampDay({ day, limit: max })));
+    } catch (e) {
+      log(`[semeur] BOAMP injoignable (${day}) : ${(e as Error).message}`);
+    }
   }
   let added = 0;
   for (const d of fetched) {

@@ -11,8 +11,11 @@ if ! command -v node >/dev/null || [ "$(node -v | cut -c2-3)" -lt 22 ]; then
 fi
 node -v
 
-echo "== 2/6 Caddy (HTTPS automatique)"
-if ! command -v caddy >/dev/null; then
+echo "== 2/6 Serveur web (HTTPS)"
+if ss -ltn | grep -q ":443 "; then
+  echo "Un serveur web occupe déjà le port 443 (nginx ?) : Caddy est ignoré. Utilise deploy/nginx-deja.conf + certbot (voir docs/DEPLOIEMENT.md)."
+  SKIP_CADDY=1
+elif ! command -v caddy >/dev/null; then
   apt-get install -y debian-keyring debian-archive-keyring apt-transport-https curl
   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
@@ -38,9 +41,16 @@ cp /opt/deja/deploy/deja.service /opt/deja/deploy/deja-semeur.service /etc/syste
 systemctl daemon-reload
 systemctl enable deja deja-semeur
 
-echo "== 5/6 Caddy"
-sed "s#deja.mistelgeehrt.com#$DOMAIN#" /opt/deja/deploy/Caddyfile > /etc/caddy/Caddyfile
-systemctl restart caddy
+echo "== 5/6 HTTPS"
+if [ -z "${SKIP_CADDY:-}" ]; then
+  sed "s#deja.mistelgeehrt.com#$DOMAIN#" /opt/deja/deploy/Caddyfile > /etc/caddy/Caddyfile
+  systemctl restart caddy
+else
+  sed "s#deja.mistelgeehrt.com#$DOMAIN#" /opt/deja/deploy/nginx-deja.conf > /etc/nginx/sites-available/deja
+  ln -sf /etc/nginx/sites-available/deja /etc/nginx/sites-enabled/deja
+  nginx -t && systemctl reload nginx
+  command -v certbot >/dev/null && certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos --redirect --register-unsafely-without-email || echo "Lance certbot à la main : certbot --nginx -d $DOMAIN --redirect"
+fi
 
 echo "== 6/6 Terminé"
 echo "Reste à faire : éditer /opt/deja/server/.env (clé API, wallet, mot de passe du tableau),"
