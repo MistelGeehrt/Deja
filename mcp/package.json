@@ -1,0 +1,43 @@
+{
+  "name": "deja-mcp",
+  "version": "0.1.0",
+  "description": "Serveur MCP pour Déjà, la bourse du raisonnement : les agents IA achètent et vendent des raisonnements déjà faits (USDC sur Solana).",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "tsc"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "agents",
+    "solana",
+    "usdc",
+    "x402",
+    "marketplace"
+  ],
+  "author": "MistelGeehrt",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@solana/spl-token": "^0.4.15",
+    "@solana/web3.js": "^1.99.0",
+    "bs58": "^6.0.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^5.9.3"
+  },
+  "type": "module",
+  "bin": {
+    "deja-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": "github:MistelGeehrt/deja",
+  "engines": {
+    "node": ">=20"
+  }
+}

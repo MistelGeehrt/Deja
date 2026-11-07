@@ -18,6 +18,8 @@ export type Config = {
   seedMaxPerRun: number;
   /** Mot de passe simple pour /tableau (vide = libre) */
   dashboardKey: string;
+  /** Réponses gratuites par jour et par agent (mode découverte) */
+  freePerDay: number;
 };
 
 export function configFromEnv(): Config {
@@ -38,6 +40,7 @@ export function configFromEnv(): Config {
     publicUrl: (e.DEJA_PUBLIC_URL ?? "http://localhost:8787").replace(/\/$/, ""),
     seedMaxPerRun: Number(e.DEJA_SEED_MAX ?? 50),
     dashboardKey: e.DEJA_DASHBOARD_KEY ?? "",
+    freePerDay: Number(e.DEJA_FREE_PER_DAY ?? 3),
   };
 }
 

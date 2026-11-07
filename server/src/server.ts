@@ -8,6 +8,7 @@ import { configFromEnv, splitPrice, type Config } from "./config.js";
 import { makeEmbedder, type Embedder } from "./embeddings.js";
 import { Market } from "./market.js";
 import { registerWeb } from "./web.js";
+import { registerApi } from "./api.js";
 
 export { configFromEnv, splitPrice, type Config };
 
@@ -67,6 +68,7 @@ export function buildApp(cfg: Config, deps: Deps = {}) {
 
   app.get("/stats", async () => db.stats());
 
+  registerApi(app, { db, market, cfg, verify });
   registerWeb(app, { db, market, cfg });
 
   return app;

@@ -25,7 +25,7 @@ export type Document = {
   created_at: string;
 };
 
-export type EventKind = "view" | "ask" | "hit" | "miss" | "near_hit" | "paywall_click" | "sale";
+export type EventKind = "view" | "ask" | "hit" | "miss" | "near_hit" | "paywall_click" | "sale" | "agent_call" | "payment_required" | "payment_ok" | "free_grant" | "agent_publish";
 
 export function openDb(path: string) {
   const db = new DatabaseSync(path);
@@ -152,6 +152,22 @@ export function openDb(path: string) {
       FROM purchases GROUP BY seller_wallet ORDER BY earned DESC LIMIT 10
     `),
     recentQuestions: db.prepare("SELECT doc_id, task, outcome, created_at FROM questions ORDER BY id DESC LIMIT 50"),
+    agentStats: db.prepare(`
+      SELECT
+        (SELECT count(DISTINCT wallet) FROM events WHERE kind='agent_call') AS agents,
+        (SELECT count(*) FROM events WHERE kind='agent_call') AS agent_calls,
+        (SELECT count(*) FROM (SELECT wallet FROM events WHERE kind='agent_call' GROUP BY wallet HAVING count(DISTINCT substr(created_at,1,10)) >= 2)) AS returning_agents,
+        (SELECT count(*) FROM events WHERE kind='payment_required') AS payment_required,
+        (SELECT count(*) FROM events WHERE kind='payment_ok') AS payment_ok,
+        (SELECT count(*) FROM events WHERE kind='free_grant') AS free_grants,
+        (SELECT count(*) FROM events WHERE kind='agent_publish') AS agent_publishes
+    `),
+    agentsByWeek: db.prepare(`
+      SELECT strftime('%Y-W%W', created_at) AS week, count(DISTINCT wallet) AS agents, count(*) AS calls,
+        sum(kind='payment_required') AS required, sum(kind='payment_ok') AS paid
+      FROM events WHERE kind IN ('agent_call','payment_required','payment_ok') GROUP BY week ORDER BY week DESC LIMIT 12
+    `),
+    freeUsed: db.prepare("SELECT count(*) AS n FROM events WHERE kind='free_grant' AND wallet = ? AND substr(created_at,1,10) = date('now')"),
   };
 
   const num = (v: unknown) => Number(v ?? 0);
@@ -219,6 +235,20 @@ export function openDb(path: string) {
       const r = s.qEmbByFp.get(fp) as { embedding: string } | undefined;
       return r ? (JSON.parse(r.embedding) as number[]) : null;
     },
+    freeUsedToday(agent: string) {
+      return num((s.freeUsed.get(agent) as { n: unknown }).n);
+    },
+    agentStats() {
+      const a = nums(s.agentStats.get() as Record<string, unknown>) as {
+        agents: number; agent_calls: number; returning_agents: number; payment_required: number; payment_ok: number; free_grants: number; agent_publishes: number;
+      };
+      return {
+        ...a,
+        return_rate: a.agents ? a.returning_agents / a.agents : 0,
+        pay_rate: a.payment_required ? a.payment_ok / a.payment_required : 0,
+        by_week: (s.agentsByWeek.all() as Record<string, unknown>[]).map(nums),
+      };
+    },
     stats() {
       const st = nums(s.stats.get() as Record<string, unknown>) as {
         documents: number; reasonings: number; views: number; visitors: number; asks: number; misses: number;
@@ -235,6 +265,7 @@ export function openDb(path: string) {
         by_day: (s.statsByDay.all() as Record<string, unknown>[]).map(nums),
         top_sellers: (s.topSellers.all() as Record<string, unknown>[]).map(nums),
         recent_questions: s.recentQuestions.all() as { doc_id: string | null; task: string; outcome: string; created_at: string }[],
+        agents: this.agentStats(),
       };
     },
   };

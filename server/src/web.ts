@@ -184,7 +184,16 @@ export function registerWeb(app: FastifyInstance, ctx: Ctx) {
     if (cfg.dashboardKey && req.query.cle !== cfg.dashboardKey) return reply.code(401).type("text/html").send(layout(cfg, "Accès", `<h1>Tableau de bord</h1><p>Ajoutez <code>?cle=…</code> à l'adresse.</p>`));
     const s = db.stats();
     const pct = (x: number) => (x * 100).toFixed(1).replace(".", ",") + " %";
+    const a = s.agents;
     const verdict =
+      a.agents < 20
+        ? `<span class="badge">Pas encore assez d'agents distincts (${a.agents}/20) pour conclure.</span>`
+        : a.payment_required >= 30 && a.pay_rate < 0.05
+          ? `<span class="badge" style="background:#fee2e2;color:#b91c1c">Les agents ne paient pas quand on le leur demande (${pct(a.pay_rate)}).</span>`
+          : a.payment_required >= 30 && a.pay_rate >= 0.15
+            ? `<span class="badge ok">Les agents paient (${pct(a.pay_rate)}) : passer à l'étape 3.</span>`
+            : `<span class="badge">Agents présents, paiements encore trop peu sollicités (${a.payment_required}/30) pour trancher.</span>`;
+    const verdictHumans =
       s.asks < 200
         ? `<span class="badge">Pas encore assez de questions (${s.asks}/200) pour conclure.</span>`
         : s.paywall_click_rate < 0.05
@@ -200,7 +209,7 @@ export function registerWeb(app: FastifyInstance, ctx: Ctx) {
     return layout(
       cfg,
       "Tableau de bord",
-      `<h1>Tableau de bord</h1><p>${verdict}</p>
+      `<h1>Tableau de bord</h1><p>${verdict}</p><p class="mute">Vitrine humaine : ${verdictHumans}</p>
       <div class="kpi">
         <div class="card"><b>${s.visitors}</b><span class="mute">visiteurs uniques</span></div>
         <div class="card"><b>${s.asks}</b><span class="mute">questions posées</span></div>
@@ -211,6 +220,19 @@ export function registerWeb(app: FastifyInstance, ctx: Ctx) {
         <div class="card"><b>${s.reasonings}</b><span class="mute">analyses en vente</span></div>
         <div class="card"><b>${s.sales}</b><span class="mute">ventes réelles (extension)</span></div>
       </div>
+      <h2>Agents IA (le vrai test)</h2>
+      <div class="kpi">
+        <div class="card"><b>${s.agents.agents}</b><span class="mute">agents distincts</span></div>
+        <div class="card"><b>${s.agents.agent_calls}</b><span class="mute">appels d'agents</span></div>
+        <div class="card"><b>${pct(s.agents.return_rate)}</b><span class="mute">agents revenus un autre jour</span></div>
+        <div class="card"><b>${s.agents.agent_publishes}</b><span class="mute">raisonnements publiés par des agents</span></div>
+        <div class="card"><b>${s.agents.payment_required}</b><span class="mute">paiements demandés (402)</span></div>
+        <div class="card"><b>${pct(s.agents.pay_rate)}</b><span class="mute">taux de paiement à la demande</span></div>
+      </div>
+      <div class="card"><table><tr><th>Semaine</th><th>Agents</th><th>Appels</th><th>402</th><th>Payés</th></tr>${
+        s.agents.by_week.map((w) => `<tr><td>${esc(String(w.week))}</td><td>${w.agents}</td><td>${w.calls}</td><td>${w.required}</td><td>${w.paid}</td></tr>`).join("") || "<tr><td colspan=5 class=mute>Aucun agent encore</td></tr>"
+      }</table></div>
+      <h2>Humains sur le site (vitrine)</h2>
       <h2>Par jour</h2><div class="card"><table><tr><th>Jour</th><th>Vues</th><th>Questions</th><th>Doublons</th><th>Quasi</th><th>Nouvelles</th><th>Clics payer</th></tr>${days || "<tr><td colspan=7 class=mute>Rien encore</td></tr>"}</table></div>
       <h2>Dernières questions</h2><div class="card"><table><tr><th>Quand</th><th>Avis</th><th>Question</th><th>Issue</th></tr>${qs || "<tr><td colspan=4 class=mute>Rien encore</td></tr>"}</table></div>
       <p class="mute">Données brutes : <a href="/stats">/stats</a></p>`

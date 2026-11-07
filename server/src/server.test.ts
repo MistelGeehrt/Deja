@@ -16,6 +16,7 @@ const cfg: Config = {
   publicUrl: "http://test",
   seedMaxPerRun: 5,
   dashboardKey: "",
+  freePerDay: 2,
   skipChainVerify: true,
 };
 

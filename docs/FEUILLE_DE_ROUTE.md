@@ -28,10 +28,17 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [x] Quasi-doublons comptés par le sens (embeddings) ; mise en forme des réponses (gras, listes)
 - [x] Tableau de bord `/tableau` avec la grille de décision intégrée ; sitemap et robots pour Google
 - [x] Kit de déploiement VPS (install.sh, services, Caddy HTTPS)
+- [x] API agents : lookup / 402 / X-Payment / publish, quota gratuit, stats agents (v1.2)
+- [x] Serveur MCP `deja-mcp` (lookup, publish, wallet) testé entre deux agents
+- [x] `/llms.txt` et `/api/v1/info` pour les agents qui arrivent par le site
 - [ ] (toi) Mettre en ligne sur le VPS et le sous-domaine — voir docs/DEPLOIEMENT.md
+- [ ] (toi) Publier `deja-mcp` sur npm (compte npm, `npm publish` depuis `mcp/`)
+- [ ] Inscrire `deja-mcp` dans les annuaires MCP (registre officiel, Smithery, mcp.so, Glama) — à faire après la mise en ligne
+- [ ] (toi) Brancher tes propres agents (Claude Code, OpenClaw) sur deja-mcp : premiers vrais utilisateurs
 - [ ] (toi) Déclarer le site dans Google Search Console (sitemap) pour accélérer l'indexation
 - [ ] (toi) Regarder le tableau de bord une fois par semaine, 6 semaines, sans rien changer
-- [ ] Décision selon la grille : < 200 questions → changer de terrain une fois ; < 5 % de clics payer → arrêter ; > 15 % → étape 3
+- [ ] Décision agents : < 20 agents distincts → diffuser plus ; 30 paiements demandés et < 5 % payés → arrêter ; > 15 % payés → étape 3
+- [ ] (vitrine humaine, secondaire) < 200 questions → changer de terrain une fois ; < 5 % de clics payer → ignorer ce canal
 
 ## Étape 3 — Ouvrir à d'autres
 - [ ] (toi) Héberger le serveur sur le VPS (HTTPS, nom de domaine)

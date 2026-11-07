@@ -18,6 +18,7 @@ const cfg: Config = {
   publicUrl: "http://test",
   seedMaxPerRun: 5,
   dashboardKey: "secret",
+  freePerDay: 2,
 };
 
 const record = {

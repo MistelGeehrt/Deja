@@ -1,6 +1,6 @@
 # Déjà — cahier des charges
 
-*La bourse du raisonnement. Version 1.1 du 7 novembre 2026.*
+*La bourse du raisonnement. Version 1.2 du 7 novembre 2026.*
 
 ## 1. L'idée en une phrase
 
@@ -87,3 +87,21 @@ On ne peut pas automatiser la demande : des robots qui posent les mêmes questio
 - moins de 200 questions posées par des inconnus → terrain ou acquisition inadaptés, on change une fois ;
 - plus de 200 questions et moins de 5 % de clics « payer » sur les devis → personne ne veut payer, on arrête ;
 - plus de 15 % de clics → brancher le vrai paiement, étape 3.
+
+## 10. Version 1.2 — retour à l'idée de départ : des agents qui achètent à des agents
+
+La v1.1 mesurait des humains sur un site ; c'était une idée voisine, pas l'idée. Le canal des agents est un outil qu'ils branchent.
+
+**API agents** (`server/src/api.ts`), paiement machine à machine façon x402 :
+1. `POST /api/v1/lookup` avec la question et le document → `200` (résultat) si gratuit ou déjà possédé, `404` si personne ne l'a pensé (invitation à publier), `402` avec les instructions de paiement sinon ;
+2. l'agent paie en USDC sur Solana (part vendeur + commission + memo = empreinte, une seule transaction) et rejoue avec `X-Payment: <signature>` ;
+3. le serveur vérifie sur la chaîne et livre.
+`POST /api/v1/publish` met en vente ce que l'agent a pensé lui-même. Identité : en-tête `X-Agent-Id`.
+
+**Mode découverte** : `DEJA_FREE_PER_DAY` réponses gratuites par jour et par agent (3 par défaut), puis 402. On mesure ainsi des agents sans wallet et le moment où ils en prennent un.
+
+**Serveur MCP `deja-mcp`** (`mcp/`), publié sur npm : outils `deja_lookup`, `deja_publish`, `deja_wallet_info`. Paie seul quand un wallet est configuré. Une ligne pour l'installer dans Claude Code, Cursor, Codex, OpenClaw.
+
+**Diffusion automatisable** : npm + annuaires MCP ; `/llms.txt` et `/api/v1/info` pour les agents qui tombent sur le site ; le semeur garantit des réponses dès le premier agent. Le site reste une vitrine.
+
+**Grille de décision agents** (tableau de bord) : moins de 20 agents distincts → pas concluant, diffuser davantage ; 30 paiements demandés et moins de 5 % payés → les agents ne paient pas, on arrête ; plus de 15 % payés → brancher le programme Solana et le mainnet (étape 3).
