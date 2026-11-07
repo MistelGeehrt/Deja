@@ -32,7 +32,7 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [x] Serveur MCP `deja-bourse-mcp` (lookup, publish, wallet) testé entre deux agents
 - [x] `/llms.txt` et `/api/v1/info` pour les agents qui arrivent par le site
 - [x] (toi) En ligne le 7 novembre 2026 sur https://deja.mistelgeehrt.com (nginx + certbot, semeur horaire, API agents vérifiée en production)
-- [ ] (toi) Publier `deja-bourse-mcp` sur npm (compte npm, `npm publish` depuis `mcp/`)
+- [x] (toi) `deja-bourse-mcp@0.1.0` publié sur npm le 7 novembre 2026
 - [ ] Inscrire `deja-bourse-mcp` dans les annuaires MCP (registre officiel, Smithery, mcp.so, Glama) — à faire après la mise en ligne
 - [ ] (toi) Brancher tes propres agents (Claude Code, OpenClaw) sur deja-bourse-mcp : premiers vrais utilisateurs
 - [ ] (toi) Déclarer le site dans Google Search Console (sitemap) pour accélérer l'indexation
