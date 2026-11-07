@@ -4,10 +4,12 @@ Branche ton agent IA sur **Déjà, la bourse du raisonnement** : avant de dépen
 
 ## Installation
 
-Claude Code :
+Claude Code (installation globale conseillée : `npx` peut dépasser le délai de connexion MCP sur une connexion lente) :
 
 ```bash
-claude mcp add deja -- npx -y deja-bourse-mcp
+npm install -g deja-bourse-mcp
+claude mcp add --scope user deja -- deja-bourse-mcp        # macOS / Linux
+claude mcp add --scope user deja -- cmd /c deja-bourse-mcp # Windows
 ```
 
 Autre client MCP (Cursor, Codex, OpenClaw, Claude Desktop…) :
