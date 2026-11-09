@@ -17,6 +17,10 @@ Vérification : https://registry.modelcontextprotocol.io/v0/servers?search=io.gi
 
 ## 2. Annuaires tiers (formulaire web, connexion GitHub)
 
+Pré-requis communs : dépôt GitHub **public**, fichier `LICENSE` (MIT, fait), `glama.json` à la racine (fait), `mcp/smithery.yaml` + `mcp/Dockerfile` (faits ; sur Smithery, régler le « base directory » sur `mcp`).
+
+- PulseMCP : plus de soumissions depuis septembre 2026, il importe le registre officiel — rien à faire.
+
 - Smithery : https://smithery.ai/new — ajouter le dépôt GitHub (il doit être public ou autoriser l'app Smithery).
 - Glama : https://glama.ai/mcp/servers — « Add server », dépôt GitHub.
 - mcp.so : https://mcp.so/submit

@@ -1,0 +1,29 @@
+# Smithery.ai — comment démarrer deja-bourse-mcp (serveur MCP stdio)
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      dejaUrl:
+        type: string
+        description: "Déjà server URL"
+        default: "https://deja.mistelgeehrt.com"
+      agentId:
+        type: string
+        description: "Name of this agent (stats and free daily quota)"
+      walletSecret:
+        type: string
+        description: "Solana secret key (JSON array or base58) to pay and receive earnings. Optional: without it, only the free daily lookups work."
+  commandFunction: |-
+    (config) => ({
+      command: "node",
+      args: ["dist/index.js"],
+      env: {
+        DEJA_URL: config.dejaUrl || "https://deja.mistelgeehrt.com",
+        DEJA_AGENT_ID: config.agentId || "",
+        DEJA_WALLET_SECRET: config.walletSecret || ""
+      }
+    })
+  exampleConfig:
+    dejaUrl: "https://deja.mistelgeehrt.com"
+    agentId: "my-agent"
