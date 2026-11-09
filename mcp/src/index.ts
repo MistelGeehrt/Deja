@@ -15,7 +15,21 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import { randomBytes } from "node:crypto";
-import { loadWallet, payQuote, type PayInstructions } from "./wallet.js";
+import type { PayInstructions } from "./wallet.js";
+import type { Keypair } from "@solana/web3.js";
+
+// Les bibliothèques Solana sont lourdes : on ne les charge qu'au premier besoin (paiement ou info wallet),
+// pour que le serveur MCP démarre vite et ne dépasse pas le délai de connexion des clients.
+let walletMod: typeof import("./wallet.js") | null = null;
+const wallet$ = async () => (walletMod ??= await import("./wallet.js"));
+let walletCache: Keypair | null | undefined;
+async function getWallet(): Promise<Keypair | null> {
+  if (walletCache !== undefined) return walletCache;
+  const secret = process.env.DEJA_WALLET_SECRET;
+  walletCache = secret ? (await wallet$()).loadWallet(secret) : null;
+  return walletCache;
+}
+const hasWalletSecret = !!process.env.DEJA_WALLET_SECRET;
 
 const BASE = (process.env.DEJA_URL ?? "https://deja.mistelgeehrt.com").replace(/\/$/, "");
 
@@ -31,7 +45,6 @@ function agentId(): string {
 }
 
 const ME = agentId();
-const wallet = loadWallet(process.env.DEJA_WALLET_SECRET);
 
 async function call(path: string, body: unknown, extra: Record<string, string> = {}) {
   const r = await fetch(BASE + path, {
@@ -51,7 +64,7 @@ async function call(path: string, body: unknown, extra: Record<string, string> =
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
 
-const server = new McpServer({ name: "deja", version: "0.1.0" });
+const server = new McpServer({ name: "deja", version: "0.1.1" });
 
 server.registerTool(
   "deja_lookup",
@@ -70,6 +83,7 @@ server.registerTool(
     },
   },
   async ({ question, url, text: body, docId, pay }) => {
+    const wallet = hasWalletSecret ? await getWallet() : null;
     const payload = { question, url, text: body, docId, wallet: wallet?.publicKey.toBase58() };
     let r = await call("/api/v1/lookup", payload);
     if (r.status === 404) return text(`Personne n'a encore pensé ça. Fais l'analyse toi-même, puis appelle deja_publish avec ton résultat : les prochains te paieront.\n(empreinte ${r.json.fingerprint})`);
@@ -80,7 +94,7 @@ server.registerTool(
             `Paiement demandé : ${r.json.price_micro_usdc / 1e6} USDC sur Solana. ${wallet ? "Rappelle avec pay=true pour payer." : "Aucun wallet configuré (DEJA_WALLET_SECRET) : impossible de payer."}`
         );
       }
-      const signature = await payQuote(wallet, r.json.pay as PayInstructions);
+      const signature = await (await wallet$()).payQuote(wallet, r.json.pay as PayInstructions);
       r = await call("/api/v1/lookup", payload, { "x-payment": signature });
       if (r.status !== 200) return text(`Paiement envoyé (${signature}) mais le serveur a répondu ${r.status} : ${JSON.stringify(r.json)}`);
     }
@@ -107,6 +121,7 @@ server.registerTool(
     },
   },
   async ({ question, result, url, text: body, docId }) => {
+    const wallet = hasWalletSecret ? await getWallet() : null;
     if (!wallet) return text("Aucun wallet configuré (DEJA_WALLET_SECRET) : impossible d'encaisser, donc rien publié. Génère un wallet avec deja_wallet_info.");
     const r = await call("/api/v1/publish", { question, result, url, text: body, docId, wallet: wallet.publicKey.toBase58() });
     if (r.status === 201) return text(`Publié (empreinte ${r.json.fingerprint}). Tu gagnes ${r.json.you_earn_per_reuse_micro_usdc / 1e6} USDC à chaque réutilisation.`);
@@ -123,6 +138,7 @@ server.registerTool(
     inputSchema: {},
   },
   async () => {
+    const wallet = hasWalletSecret ? await getWallet() : null;
     if (!wallet)
       return text(
         "Aucun wallet. Pour en créer un : `npx deja-bourse-mcp --new-wallet` affiche une clé secrète à mettre dans DEJA_WALLET_SECRET. " +
