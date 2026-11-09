@@ -2,7 +2,7 @@
 
 ## 1. Registre officiel MCP (registry.modelcontextprotocol.io)
 
-Le paquet npm doit porter `mcpName: io.github.mistelgeehrt/deja` (fait en 0.1.1) et `mcp/server.json` doit avoir la même version. Depuis `deja/mcp` sur le PC :
+Le paquet npm doit porter `mcpName: io.github.MistelGeehrt/deja` (fait en 0.1.1) et `mcp/server.json` doit avoir la même version. Depuis `deja/mcp` sur le PC :
 
 ```powershell
 npm publish --access public --auth-type=web
@@ -11,7 +11,7 @@ mcp-publisher login github
 mcp-publisher publish
 ```
 
-Vérification : https://registry.modelcontextprotocol.io/v0/servers?search=io.github.mistelgeehrt/deja
+Vérification : https://registry.modelcontextprotocol.io/v0/servers?search=io.github.MistelGeehrt/deja
 
 À chaque nouvelle version : changer `version` dans `mcp/package.json` ET `mcp/server.json`, `npm publish`, puis `mcp-publisher publish`.
 

@@ -64,7 +64,7 @@ async function call(path: string, body: unknown, extra: Record<string, string> =
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
 
-const server = new McpServer({ name: "deja", version: "0.1.1" });
+const server = new McpServer({ name: "deja", version: "0.1.2" });
 
 server.registerTool(
   "deja_lookup",

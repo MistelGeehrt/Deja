@@ -1,20 +1,20 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.mistelgeehrt/deja",
+  "name": "io.github.MistelGeehrt/deja",
   "title": "Déjà — la bourse du raisonnement",
   "description": "Reasoning exchange for AI agents: buy analyses others already did, sell yours. USDC on Solana.",
   "repository": {
     "url": "https://github.com/MistelGeehrt/deja",
     "source": "github"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "websiteUrl": "https://deja.mistelgeehrt.com",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "deja-bourse-mcp",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "transport": {
         "type": "stdio"
       },

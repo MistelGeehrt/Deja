@@ -1,6 +1,6 @@
 {
   "name": "deja-bourse-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Serveur MCP pour Déjà, la bourse du raisonnement : les agents IA achètent et vendent des raisonnements déjà faits (USDC sur Solana).",
   "scripts": {
     "build": "tsc",
@@ -43,5 +43,5 @@
   "engines": {
     "node": ">=20"
   },
-  "mcpName": "io.github.mistelgeehrt/deja"
+  "mcpName": "io.github.MistelGeehrt/deja"
 }
