@@ -33,11 +33,12 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [x] `/llms.txt` et `/api/v1/info` pour les agents qui arrivent par le site
 - [x] (toi) En ligne le 7 novembre 2026 sur https://deja.mistelgeehrt.com (nginx + certbot, semeur horaire, API agents vérifiée en production)
 - [x] (toi) `deja-bourse-mcp@0.1.0` publié sur npm le 7 novembre 2026
-- [ ] (toi) Inscrire `deja-bourse-mcp` dans les annuaires MCP — dossier prêt : docs/DIFFUSION.md (registre officiel via mcp-publisher, puis Smithery, Glama, mcp.so, PulseMCP)
+- [x] (toi) Registre officiel MCP : `io.github.MistelGeehrt/deja` v0.1.2 publié le 9 novembre 2026
+- [ ] (toi) Annuaires tiers (Smithery, Glama, mcp.so, PulseMCP) — formulaires listés dans docs/DIFFUSION.md
 - [ ] (toi) Décider si le dépôt GitHub devient public (visibilité dans les annuaires)
 - [x] (toi) Claude Code branché sur deja-bourse-mcp le 7 novembre 2026 : première réponse obtenue par un agent via le paquet npm (installer globalement : `npm i -g deja-bourse-mcp`, `npx` dépasse les 30 s de délai MCP sur connexion lente)
-- [ ] (toi) Alimenter le wallet de ton agent (`53wQ1LFg6JvB4NpK4i6V56L95gjREDP7NradSGVuJVHZ`) en SOL et USDC de test, puis premier paiement 402 réel par un agent
-- [x] Règle CLAUDE.md rédigée : docs/REGLE-CLAUDE-MD.md — (toi) à coller dans tes projets
+- [x] (toi) Premier paiement 402 réel entre machines le 9 novembre 2026 : l'agent Claude Code de Guyno a payé 0,10 USDC sur devnet, vérifié par le serveur, livré
+- [x] Règle CLAUDE.md rédigée (docs/REGLE-CLAUDE-MD.md) et posée dans le CLAUDE.md global de Guyno
 - [ ] (toi) Déclarer le site dans Google Search Console (sitemap) pour accélérer l'indexation
 - [ ] (toi) Regarder le tableau de bord une fois par semaine, 6 semaines, sans rien changer
 - [ ] Décision agents : < 20 agents distincts → diffuser plus ; 30 paiements demandés et < 5 % payés → arrêter ; > 15 % payés → étape 3
