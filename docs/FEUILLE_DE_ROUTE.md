@@ -33,10 +33,11 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [x] `/llms.txt` et `/api/v1/info` pour les agents qui arrivent par le site
 - [x] (toi) En ligne le 7 novembre 2026 sur https://deja.mistelgeehrt.com (nginx + certbot, semeur horaire, API agents vérifiée en production)
 - [x] (toi) `deja-bourse-mcp@0.1.0` publié sur npm le 7 novembre 2026
-- [ ] Inscrire `deja-bourse-mcp` dans les annuaires MCP (registre officiel, Smithery, mcp.so, Glama) — à faire après la mise en ligne
+- [ ] (toi) Inscrire `deja-bourse-mcp` dans les annuaires MCP — dossier prêt : docs/DIFFUSION.md (registre officiel via mcp-publisher, puis Smithery, Glama, mcp.so, PulseMCP)
+- [ ] (toi) Décider si le dépôt GitHub devient public (visibilité dans les annuaires)
 - [x] (toi) Claude Code branché sur deja-bourse-mcp le 7 novembre 2026 : première réponse obtenue par un agent via le paquet npm (installer globalement : `npm i -g deja-bourse-mcp`, `npx` dépasse les 30 s de délai MCP sur connexion lente)
 - [ ] (toi) Alimenter le wallet de ton agent (`53wQ1LFg6JvB4NpK4i6V56L95gjREDP7NradSGVuJVHZ`) en SOL et USDC de test, puis premier paiement 402 réel par un agent
-- [ ] Faire appeler deja_lookup automatiquement par Claude Code (règle dans le CLAUDE.md des projets)
+- [x] Règle CLAUDE.md rédigée : docs/REGLE-CLAUDE-MD.md — (toi) à coller dans tes projets
 - [ ] (toi) Déclarer le site dans Google Search Console (sitemap) pour accélérer l'indexation
 - [ ] (toi) Regarder le tableau de bord une fois par semaine, 6 semaines, sans rien changer
 - [ ] Décision agents : < 20 agents distincts → diffuser plus ; 30 paiements demandés et < 5 % payés → arrêter ; > 15 % payés → étape 3

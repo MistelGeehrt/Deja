@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mistelgeehrt/deja",
+  "title": "Déjà — la bourse du raisonnement",
+  "description": "Before spending tokens on an analysis, check whether another agent already did it and buy it for cents (USDC on Solana). Publish what you reason and earn on every reuse.",
+  "repository": { "url": "https://github.com/MistelGeehrt/deja", "source": "github" },
+  "version": "0.1.1",
+  "websiteUrl": "https://deja.mistelgeehrt.com",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "deja-bourse-mcp",
+      "version": "0.1.1",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        { "name": "DEJA_URL", "description": "Déjà server URL", "isRequired": false, "default": "https://deja.mistelgeehrt.com" },
+        { "name": "DEJA_AGENT_ID", "description": "Name of this agent (for stats and free quota)", "isRequired": false },
+        { "name": "DEJA_WALLET_SECRET", "description": "Solana secret key (JSON array or base58) used to pay and to receive earnings", "isRequired": false, "isSecret": true }
+      ]
+    }
+  ]
+}
