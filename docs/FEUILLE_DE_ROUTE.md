@@ -36,7 +36,7 @@ Coche au fur et à mesure. Les cases « (toi) » sont les gestes manuels de Guyn
 - [x] (toi) Registre officiel MCP : `io.github.MistelGeehrt/deja` v0.1.2 publié le 9 novembre 2026
 - [x] (toi) Glama : fiche revendiquée, test de construction réussi, release publiée, score 83 % (14 novembre 2026)
 - [x] Smithery : fermé aux inscriptions (racheté par Arcade, comptes coupés le 31 octobre 2026) ; PulseMCP : importe le registre officiel, rien à faire
-- [ ] (toi) mcp.so : formulaire « Submit a project »
+- [ ] mcp.so : soumission payante (39 $), reportée le 14 novembre 2026 ; à reconsidérer si les agents arrivent
 - [x] (toi) Dépôt GitHub rendu public (licence MIT)
 - [x] (toi) Claude Code branché sur deja-bourse-mcp le 7 novembre 2026 : première réponse obtenue par un agent via le paquet npm (installer globalement : `npm i -g deja-bourse-mcp`, `npx` dépasse les 30 s de délai MCP sur connexion lente)
 - [x] (toi) Premier paiement 402 réel entre machines le 9 novembre 2026 : l'agent Claude Code de Guyno a payé 0,10 USDC sur devnet, vérifié par le serveur, livré
