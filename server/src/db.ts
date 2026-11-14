@@ -137,8 +137,8 @@ export function openDb(path: string) {
         (SELECT count(*) FROM events WHERE kind='hit') AS hits,
         (SELECT count(*) FROM events WHERE kind='near_hit') AS near_hits,
         (SELECT count(*) FROM events WHERE kind='paywall_click') AS paywall_clicks,
-        (SELECT count(*) FROM purchases) AS sales,
-        (SELECT coalesce(sum(amount_micro_usdc),0) FROM purchases) AS volume_micro_usdc,
+        (SELECT count(*) FROM purchases WHERE tx_signature NOT LIKE 'free:%') AS sales,
+        (SELECT coalesce(sum(amount_micro_usdc),0) FROM purchases WHERE tx_signature NOT LIKE 'free:%') AS volume_micro_usdc,
         (SELECT coalesce(sum(fee_micro_usdc),0) FROM purchases) AS fees_micro_usdc
     `),
     statsByDay: db.prepare(`
@@ -151,7 +151,7 @@ export function openDb(path: string) {
       SELECT seller_wallet, sum(amount_micro_usdc - fee_micro_usdc) AS earned, count(*) AS sales
       FROM purchases GROUP BY seller_wallet ORDER BY earned DESC LIMIT 10
     `),
-    recentQuestions: db.prepare("SELECT doc_id, task, outcome, created_at FROM questions ORDER BY id DESC LIMIT 50"),
+    recentQuestions: db.prepare("SELECT doc_id, task, outcome, created_at FROM questions WHERE outcome != 'owned' ORDER BY id DESC LIMIT 50"),
     agentStats: db.prepare(`
       SELECT
         (SELECT count(DISTINCT wallet) FROM events WHERE kind='agent_call') AS agents,

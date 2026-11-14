@@ -106,7 +106,9 @@ export function registerWeb(app: FastifyInstance, ctx: Ctx) {
     const d = db.docGet(id);
     if (!d) return reply.code(404).type("text/html").send(layout(cfg, "Avis introuvable", `<h1>Avis introuvable</h1><p><a href="/">Retour</a></p>`));
     const v = visitor(req, reply);
-    db.logEvent("view", { wallet: v, docId: id });
+    // Les robots (Google, scrapers…) ne comptent pas comme visiteurs.
+    const ua = String(req.headers["user-agent"] ?? "");
+    if (!/bot|crawl|spider|slurp|fetch|preview|scan|monitor|curl|wget|python|go-http|headless/i.test(ua)) db.logEvent("view", { wallet: v, docId: id });
     const u = unlocked(req);
     const standard = db.byDoc(id).filter((r) => STANDARD_QUESTIONS.includes(r.task));
     const others = db.byDoc(id).filter((r) => !STANDARD_QUESTIONS.includes(r.task));
@@ -218,7 +220,7 @@ export function registerWeb(app: FastifyInstance, ctx: Ctx) {
         <div class="card"><b>${pct(s.paywall_click_rate)}</b><span class="mute">clics « payer » sur devis</span></div>
         <div class="card"><b>${s.documents}</b><span class="mute">avis en base</span></div>
         <div class="card"><b>${s.reasonings}</b><span class="mute">analyses en vente</span></div>
-        <div class="card"><b>${s.sales}</b><span class="mute">ventes réelles (extension)</span></div>
+        <div class="card"><b>${s.sales}</b><span class="mute">ventes payées (hors gratuites)</span></div>
       </div>
       <h2>Agents IA (le vrai test)</h2>
       <div class="kpi">
