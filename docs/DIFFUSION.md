@@ -21,8 +21,8 @@ Pré-requis communs : dépôt GitHub **public**, fichier `LICENSE` (MIT, fait), 
 
 - PulseMCP : plus de soumissions depuis septembre 2026, il importe le registre officiel — rien à faire.
 
-- Smithery : https://smithery.ai/new — ajouter le dépôt GitHub (il doit être public ou autoriser l'app Smithery).
-- Glama : https://glama.ai/mcp/servers — « Add server », dépôt GitHub.
+- Smithery : fermé aux inscriptions depuis le rachat par Arcade (comptes coupés le 31 octobre 2026). Ignorer.
+- Glama : fait (https://glama.ai/mcp/servers/MistelGeehrt/deja). Réglage du test : Node 22, build steps `["npm install -g deja-bourse-mcp@<version>"]`, CMD `["mcp-proxy", "--", "deja-bourse-mcp"]`. À chaque nouvelle version npm, mettre à jour le numéro puis « Build & Release ».
 - mcp.so : https://mcp.so/submit
 - PulseMCP : https://www.pulsemcp.com/submit
 - Cursor / Codex / autres : rien à soumettre, ils lisent le registre officiel ou npm.
