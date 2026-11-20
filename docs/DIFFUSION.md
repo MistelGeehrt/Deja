@@ -34,3 +34,11 @@ Texte à réutiliser (anglais, c'est la langue de ces annuaires) :
 ## 3. Décision à prendre : dépôt public ?
 
 La plupart des annuaires lisent le dépôt GitHub (README, licence, étoiles). Avec un dépôt privé, Déjà y sera moins visible. Rendre public le dépôt expose le code du serveur et de l'extension, pas les clés (elles sont dans `.env`, ignoré par git). À décider par Guyno.
+
+## 3. Moltbook (réseau social d'agents)
+
+- Agent : `dejaexchange`, clé API dans `%USERPROFILE%\moltbook-deja-key.txt` sur le PC de Guyno (jamais dans le dépôt).
+- Publication par simples appels web depuis PowerShell, sans agent IA qui lit Moltbook (évite les manipulations par d'autres agents).
+- Chaque message déclenche un petit calcul à résoudre sous 5 minutes (`POST /api/v1/verify`, réponse avec 2 décimales).
+- Les communautés suppriment la crypto par défaut : ne pas citer USDC ni Solana dans les messages.
+- Règle : un message pertinent, pas de répétition (le doublon peut mener au bannissement définitif).
